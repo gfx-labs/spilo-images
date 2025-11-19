@@ -16,12 +16,12 @@ All images are built from Spilo source with:
 Images are published to `ghcr.io/gfx-labs/spilo-images/spilo` with explicit version tags only.
 
 ### PostgreSQL 16 (Spilo 3.x)
-- `ghcr.io/gfx-labs/spilo-images/spilo:16-3.3-p3`
+- `ghcr.io/gfx-labs/spilo-images/spilo:16-3.3-p3-3.6-2.23.1`
 
 ### PostgreSQL 17 (Spilo 4.x)
-- `ghcr.io/gfx-labs/spilo-images/spilo:17-4.0-p3`
+- `ghcr.io/gfx-labs/spilo-images/spilo:17-4.0-p3-3.6-2.23.1`
 
-All tags follow the format `<pg-version>-<spilo-version>`. No `-latest` tags are provided to ensure explicit version tracking.
+All tags follow the format `<pg>-<spilo>-<postgis>-<timescaledb>`. No `-latest` tags are provided to ensure explicit version tracking.
 
 ## Building Locally
 
@@ -68,9 +68,11 @@ strategy:
       - pg_version: "16"
         spilo_version: "3.3-p3"
         postgis_version: "3.6"
+        timescaledb_version: "2.23.1"
       - pg_version: "17"
         spilo_version: "4.0-p3"
         postgis_version: "3.6"
+        timescaledb_version: "2.23.1"
 ```
 
 ### Build Process
@@ -82,6 +84,7 @@ strategy:
 ### Build Arguments
 
 Each build uses:
+- `TIMESCALEDB=2.23.1`: TimescaleDB version to build from source
 - `TIMESCALEDB_APACHE_ONLY=false`: Include full TimescaleDB with proprietary features
 - PostGIS version is patched in the Dockerfile before build
 
@@ -106,10 +109,10 @@ To update to a new Spilo version:
 
 ## Version Matrix
 
-| PostgreSQL Version | Spilo Version | PostGIS Version | Image Tag |
-|-------------------|---------------|-----------------|-----------|
-| 16 | 3.3-p3 | 3.6 | 16-3.3-p3 |
-| 17 | 4.0-p3 | 3.6 | 17-4.0-p3 |
+| PostgreSQL | Spilo | PostGIS | TimescaleDB | Image Tag |
+|------------|-------|---------|-------------|-----------|
+| 16 | 3.3-p3 | 3.6 | 2.23.1 | 16-3.3-p3-3.6-2.23.1 |
+| 17 | 4.0-p3 | 3.6 | 2.23.1 | 17-4.0-p3-3.6-2.23.1 |
 
 All builds use `TIMESCALEDB_APACHE_ONLY=false`.
 
