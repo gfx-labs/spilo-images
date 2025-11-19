@@ -27,10 +27,8 @@ jobs:
         include:
           - pg_version: "16"
             spilo_version: "3.3-p3"
-            pgoldversions: "15"
           - pg_version: "17"
             spilo_version: "4.0-p3"
-            pgoldversions: "16"
     steps:
       - name: Checkout Spilo repository
         uses: actions/checkout@v4
@@ -57,8 +55,6 @@ jobs:
           push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ matrix.pg_version }}-${{ matrix.spilo_version }}
           build-args: |
-            PGVERSION=${{ matrix.pg_version }}
-            PGOLDVERSIONS=${{ matrix.pgoldversions }}
             TIMESCALEDB_APACHE_ONLY=false
           cache-from: type=gha,scope=pg${{ matrix.pg_version }}
           cache-to: type=gha,mode=max,scope=pg${{ matrix.pg_version }}
