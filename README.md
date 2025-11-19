@@ -6,8 +6,10 @@ This repository builds and publishes [Spilo](https://github.com/zalando/spilo) P
 
 All images are built from Spilo source with:
 - `TIMESCALEDB_APACHE_ONLY=false` - Includes full TimescaleDB (not just Apache-licensed version)
+- `PGOLDVERSIONS` - Older PostgreSQL versions to include for pg_upgrade support
 - Explicit PostgreSQL versions
 - Multi-platform support (amd64, arm64)
+- Built on 8-core runners for faster compilation
 
 ## Available Images
 
@@ -33,6 +35,7 @@ cd spilo/postgres-appliance
 # Build for PostgreSQL 16
 docker build \
   --build-arg PGVERSION=16 \
+  --build-arg PGOLDVERSIONS=15 \
   --build-arg TIMESCALEDB_APACHE_ONLY=false \
   -t spilo:16-3.3-p3 .
 
@@ -40,6 +43,7 @@ docker build \
 git checkout 4.0-p3
 docker build \
   --build-arg PGVERSION=17 \
+  --build-arg PGOLDVERSIONS=16 \
   --build-arg TIMESCALEDB_APACHE_ONLY=false \
   -t spilo:17-4.0-p3 .
 ```
@@ -65,14 +69,17 @@ strategy:
     include:
       - pg_version: "16"
         spilo_version: "3.3-p3"
+        pgoldversions: "15"
       - pg_version: "17"
         spilo_version: "4.0-p3"
+        pgoldversions: "16"
 ```
 
 ### Build Arguments
 
 Each build uses:
 - `PGVERSION`: PostgreSQL major version (16, 17, etc.)
+- `PGOLDVERSIONS`: Older PostgreSQL versions to include (for pg_upgrade)
 - `TIMESCALEDB_APACHE_ONLY=false`: Include full TimescaleDB with proprietary features
 
 ## Adding New PostgreSQL Versions
@@ -83,6 +90,7 @@ To add support for a new PostgreSQL version:
    ```yaml
    - pg_version: "18"
      spilo_version: "5.0-p1"
+     pgoldversions: "17"
    ```
 2. Commit and push to trigger the build
 
@@ -95,10 +103,12 @@ To update to a new Spilo version:
 
 ## Version Matrix
 
-| PostgreSQL Version | Spilo Version | Build Args | Image Tag |
-|-------------------|---------------|------------|-----------|
-| 16 | 3.3-p3 | TIMESCALEDB_APACHE_ONLY=false | 16-3.3-p3 |
-| 17 | 4.0-p3 | TIMESCALEDB_APACHE_ONLY=false | 17-4.0-p3 |
+| PostgreSQL Version | Spilo Version | PGOLDVERSIONS | Image Tag |
+|-------------------|---------------|---------------|-----------|
+| 16 | 3.3-p3 | 15 | 16-3.3-p3 |
+| 17 | 4.0-p3 | 16 | 17-4.0-p3 |
+
+All builds use `TIMESCALEDB_APACHE_ONLY=false`.
 
 ## Upstream Resources
 
