@@ -29,11 +29,11 @@ jobs:
           - pg_version: "16"
             spilo_version: "3.3-p3"
             postgis_version: "3.6"
-            timescaledb_version: "2.23.1"
+            timescaledb_version: "2.24.0"
           - pg_version: "17"
             spilo_version: "4.0-p3"
             postgis_version: "3.6"
-            timescaledb_version: "2.23.1"
+            timescaledb_version: "2.24.0"
     steps:
       - name: Checkout Spilo repository
         uses: actions/checkout@v4
